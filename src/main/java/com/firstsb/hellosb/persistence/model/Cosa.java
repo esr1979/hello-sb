@@ -1,4 +1,4 @@
-package com.firstsb.hellosb.Persistence.model;
+package com.firstsb.hellosb.persistence.model;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -17,6 +17,7 @@ public class Cosa {
     private String descripcion;
 
     public Cosa(String nombre, String descripcion) {
+        super();
         this.nombre = nombre;
         this.descripcion = descripcion;
     }

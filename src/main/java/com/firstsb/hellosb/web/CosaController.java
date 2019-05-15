@@ -1,7 +1,7 @@
 package com.firstsb.hellosb.web;
 
-import com.firstsb.hellosb.Persistence.model.Cosa;
-import com.firstsb.hellosb.Persistence.repo.CosaRepository;
+import com.firstsb.hellosb.persistence.model.Cosa;
+import com.firstsb.hellosb.persistence.repository.CosaRepository;
 import com.firstsb.hellosb.web.Exception.CosaIdMismatchException;
 import com.firstsb.hellosb.web.Exception.CosaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

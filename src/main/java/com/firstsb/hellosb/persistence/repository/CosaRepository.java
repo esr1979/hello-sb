@@ -1,6 +1,6 @@
-package com.firstsb.hellosb.Persistence.repo;
+package com.firstsb.hellosb.persistence.repository;
 
-import com.firstsb.hellosb.Persistence.model.Cosa;
+import com.firstsb.hellosb.persistence.model.Cosa;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
