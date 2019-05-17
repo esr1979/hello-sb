@@ -16,6 +16,10 @@ public class Cosa {
     @Column (nullable = false)
     private String descripcion;
 
+    public Cosa(){
+        super();
+    }
+
     public Cosa(String nombre, String descripcion) {
         super();
         this.nombre = nombre;
@@ -58,4 +62,11 @@ public class Cosa {
     public int hashCode() {
         return Objects.hash(getId());
     }
+
+
+    @Override
+    public String toString() {
+        return "Cosa [id=" + id + ", nombre=" + nombre + ", descripción=" + descripcion + "]";
+    }
+
 }

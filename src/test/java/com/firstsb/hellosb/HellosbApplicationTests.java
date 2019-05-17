@@ -3,11 +3,8 @@ package com.firstsb.hellosb;
 import com.firstsb.hellosb.persistence.model.Cosa;
 
 import io.restassured.RestAssured;
-import io.restassured.http.Method;
 import io.restassured.response.Response;
 
-import io.restassured.specification.RequestSpecification;
-import javafx.application.Application;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,17 +13,15 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.List;
+
+import javax.print.attribute.standard.Media;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
@@ -36,6 +31,8 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 public class HellosbApplicationTests {
 
 	private static final Logger log = LoggerFactory.getLogger(HellosbApplicationTests.class);
+
+	private static final String API_ROOT = "http://localhost/api/cosas";
 
 	private Cosa createRandomCosa() {
 		final Cosa cosa = new Cosa("","");
@@ -79,6 +76,20 @@ public class HellosbApplicationTests {
 		log.info("CONNECTING TO ENDPOINT");
 		Response response = RestAssured.get("http://localhost");
 		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+
+	}
+
+	@Test
+	@Order(4)
+	public void createCosaThere(){
+
+		log.info("CREATION OF NEW COSA");
+		Cosa cosa = new Cosa("","");
+		cosa = createRandomCosa();
+		log.info("PUTTING THE COSA THERE");
+		Response response = RestAssured.given().contentType(MediaType.APPLICATION_JSON_VALUE).body(cosa).post(API_ROOT);
+		Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
+
 
 	}
 
