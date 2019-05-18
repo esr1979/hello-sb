@@ -25,6 +25,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.print.attribute.standard.Media;
 
+import java.util.List;
+
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 
@@ -95,7 +97,7 @@ public class HellosbApplicationTests {
 		cosa = createRandomCosa();
 		log.info("NAME --> " + cosa.getNombre());
 		log.info("DESCRIPTION --> " + cosa.getDescripcion());
-		log.info("PUTTING THE COSA THERE");
+		log.info("PUTTING THE COSA THERE 1");
 		Response response = RestAssured.given()
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.body(cosa)
@@ -105,7 +107,7 @@ public class HellosbApplicationTests {
 		cosa = createRandomCosa();
 		log.info("NAME --> " + cosa.getNombre());
 		log.info("DESCRIPTION --> " + cosa.getDescripcion());
-		log.info("PUTTING THE COSA THERE");
+		log.info("PUTTING THE COSA THERE 2");
 		response = RestAssured.given()
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.body(cosa)
@@ -115,7 +117,7 @@ public class HellosbApplicationTests {
 		cosa = createRandomCosa();
 		log.info("NAME --> " + cosa.getNombre());
 		log.info("DESCRIPTION --> " + cosa.getDescripcion());
-		log.info("PUTTING THE COSA THERE");
+		log.info("PUTTING THE COSA THERE 3");
 		response = RestAssured.given()
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.body(cosa)
@@ -150,10 +152,38 @@ public class HellosbApplicationTests {
 
 		log.info("THE COSA WE HAVE CREATED IS LOCATED IN --> " + location);
 		log.info("THE COSA NAME IS --> " + response.jsonPath().get("nombre"));
+		log.info("WHOLE BODY --> " + response.getBody().asString());
 
 		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 		Assert.assertEquals(cosa.getNombre(), response.jsonPath().get("nombre"));
 
+	}
+
+	@Test
+	public void Step_7_getCosaByName() {
+
+		Cosa cosa = createRandomCosa();
+		createCosaAsUri(cosa);
+
+		log.info("NAME --> " + cosa.getNombre());
+		log.info("DESCRIPTION --> " + cosa.getDescripcion());
+		log.info("COSA CREATED");
+
+		Response response = RestAssured.get(
+				API_ROOT + "/nombre/" + cosa.getNombre());
+
+		Cosa cosarecuperada[] = response.getBody().as(Cosa[].class);
+
+		log.info("WE HAVE RECOVERED THE FOLLOWING ...");
+		log.info("WHOLE BODY --> " + response.getBody().asString());
+
+		log.info(Long.toString(cosarecuperada[0].getId()));
+		log.info(cosarecuperada[0].getNombre());
+		log.info(cosarecuperada[0].getDescripcion());
+
+		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+		Assert.assertTrue(response.as(List.class)
+				.size() > 0);
 	}
 
 

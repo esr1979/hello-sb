@@ -23,8 +23,8 @@ public class CosaController {
     }
 
     @GetMapping("/nombre/{cosaNombre}")
-    public List findByTitle(@PathVariable String bookNombre) {
-        return cosaRepository.findByNombre(bookNombre);
+    public List findByNombre(@PathVariable String cosaNombre) {
+        return cosaRepository.findByNombre(cosaNombre);
     }
 
     @GetMapping("/{id}")
@@ -47,7 +47,7 @@ public class CosaController {
     }
 
     @PutMapping("/{id}")
-    public Cosa updateBook(@RequestBody Cosa cosa, @PathVariable Long id) {
+    public Cosa updateCosa(@RequestBody Cosa cosa, @PathVariable Long id) {
         if (cosa.getId() != id) {
             throw new CosaIdMismatchException();
         }
