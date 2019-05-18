@@ -44,7 +44,7 @@ public class HellosbApplicationTests {
 		return cosa;
 	}
 
-	private String createBookAsUri(Cosa cosa) {
+	private String createCosaAsUri(Cosa cosa) {
 		Response response = RestAssured.given()
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.body(cosa)
@@ -88,15 +88,38 @@ public class HellosbApplicationTests {
 	}
 
 	@Test
-	public void Step4_createCosaThere(){
+	public void Step4_createCosasThere(){
 
 		log.info("CREATION OF NEW COSA");
 		Cosa cosa = new Cosa("","");
 		cosa = createRandomCosa();
-		log.info("NOMBRE " + cosa.getNombre());
-		log.info("DESCRIPCIÓN " + cosa.getDescripcion());
+		log.info("NAME --> " + cosa.getNombre());
+		log.info("DESCRIPTION --> " + cosa.getDescripcion());
 		log.info("PUTTING THE COSA THERE");
-		Response response = RestAssured.given().contentType(MediaType.APPLICATION_JSON_VALUE).body(cosa).post(API_ROOT);
+		Response response = RestAssured.given()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.body(cosa)
+				.post(API_ROOT);
+		Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
+
+		cosa = createRandomCosa();
+		log.info("NAME --> " + cosa.getNombre());
+		log.info("DESCRIPTION --> " + cosa.getDescripcion());
+		log.info("PUTTING THE COSA THERE");
+		response = RestAssured.given()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.body(cosa)
+				.post(API_ROOT);
+		Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
+
+		cosa = createRandomCosa();
+		log.info("NAME --> " + cosa.getNombre());
+		log.info("DESCRIPTION --> " + cosa.getDescripcion());
+		log.info("PUTTING THE COSA THERE");
+		response = RestAssured.given()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.body(cosa)
+				.post(API_ROOT);
 		Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
 
 		//This is just to test immediately
@@ -111,13 +134,27 @@ public class HellosbApplicationTests {
 	public void Step_5_getAllCosas() {
 
 		Response response = RestAssured.get(API_ROOT);
-		log.info("WE HAVE READ THE FOLLOWING PIECE OF SHIT " + response.getBody().asString());
+		String location = API_ROOT + "/" + response.jsonPath().get("id");
+		log.info("WE HAVE READ THE FOLLOWING PIECE OF SHIT --> " + response.getBody().asString());
+		log.info("THE COSAS WE HAVE READ ARE LOCATED IN --> " + location);
 		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
-
-
 
 	}
 
+	@Test
+	public void Step_6_createCosaThereAsUri() {
+
+		Cosa cosa = createRandomCosa();
+		String location = createCosaAsUri(cosa);
+		Response response = RestAssured.get(location);
+
+		log.info("THE COSA WE HAVE CREATED IS LOCATED IN --> " + location);
+		log.info("THE COSA NAME IS --> " + response.jsonPath().get("nombre"));
+
+		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+		Assert.assertEquals(cosa.getNombre(), response.jsonPath().get("nombre"));
+
+	}
 
 
 }
