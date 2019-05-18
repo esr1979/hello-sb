@@ -7,9 +7,11 @@ import io.restassured.response.Response;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +30,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = HellosbApplication.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class HellosbApplicationTests {
 
 	private static final Logger log = LoggerFactory.getLogger(HellosbApplicationTests.class);
@@ -41,6 +44,14 @@ public class HellosbApplicationTests {
 		return cosa;
 	}
 
+	private String createBookAsUri(Cosa cosa) {
+		Response response = RestAssured.given()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.body(cosa)
+				.post(API_ROOT);
+		return API_ROOT + "/" + response.jsonPath().get("id");
+	}
+
 	@LocalServerPort
 	int port;
 
@@ -50,16 +61,14 @@ public class HellosbApplicationTests {
 	}
 
 	@Test
-	@Order(1)
-	public void contextLoads() {
+	public void Step1_contextLoads() {
 
 		log.info("CONTEXT TEST LOAD HAS BEEN EXECUTED");
 
 	}
 
 	@Test
-	@Order(2)
-	public void createCosa() {
+	public void Step2_createCosa() {
 
 		log.info("LET'S SEE IF WE CAN CREATE A THING");
 		Cosa cosa = new Cosa("", "");
@@ -70,8 +79,7 @@ public class HellosbApplicationTests {
 	}
 
 	@Test
-	@Order(3)
-	public void testEndpoint() {
+	public void Step3_testEndpoint() {
 
 		log.info("CONNECTING TO ENDPOINT");
 		Response response = RestAssured.get("http://localhost");
@@ -80,17 +88,36 @@ public class HellosbApplicationTests {
 	}
 
 	@Test
-	@Order(4)
-	public void createCosaThere(){
+	public void Step4_createCosaThere(){
 
 		log.info("CREATION OF NEW COSA");
 		Cosa cosa = new Cosa("","");
 		cosa = createRandomCosa();
+		log.info("NOMBRE " + cosa.getNombre());
+		log.info("DESCRIPCIÓN " + cosa.getDescripcion());
 		log.info("PUTTING THE COSA THERE");
 		Response response = RestAssured.given().contentType(MediaType.APPLICATION_JSON_VALUE).body(cosa).post(API_ROOT);
 		Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
 
+		//This is just to test immediately
+		//response = RestAssured.get(API_ROOT);
+		//log.info("WE HAVE READ THE FOLLOWING PIECE OF SHIT " + response.getBody().asString());
+		//Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+
 
 	}
+
+	@Test
+	public void Step_5_getAllCosas() {
+
+		Response response = RestAssured.get(API_ROOT);
+		log.info("WE HAVE READ THE FOLLOWING PIECE OF SHIT " + response.getBody().asString());
+		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+
+
+
+	}
+
+
 
 }
