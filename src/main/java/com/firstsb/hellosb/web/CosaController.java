@@ -28,7 +28,7 @@ public class CosaController {
     }
 
     @GetMapping("/{id}")
-    public Cosa findOne(@PathVariable Long id) {
+    public Cosa findOne(@PathVariable String id) {
         return cosaRepository.findById(id)
                 .orElseThrow(CosaNotFoundException::new);
     }
@@ -40,15 +40,15 @@ public class CosaController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable String id) {
         cosaRepository.findById(id)
                 .orElseThrow(CosaNotFoundException::new);
         cosaRepository.deleteById(id);
     }
 
     @PutMapping("/{id}")
-    public Cosa updateCosa(@RequestBody Cosa cosa, @PathVariable Long id) {
-        if (cosa.getId() != id) {
+    public Cosa updateCosa(@RequestBody Cosa cosa, @PathVariable String id) {
+        if (!cosa.getId().equals(id)) {
             throw new CosaIdMismatchException();
         }
         cosaRepository.findById(id)

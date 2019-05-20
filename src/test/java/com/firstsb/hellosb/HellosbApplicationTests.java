@@ -17,13 +17,9 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-
-
-import javax.print.attribute.standard.Media;
 
 import java.util.List;
 
@@ -178,7 +174,7 @@ public class HellosbApplicationTests {
 		log.info("WE HAVE RECOVERED THE FOLLOWING ...");
 		log.info("WHOLE BODY --> " + response.getBody().asString());
 
-		log.info(Long.toString(cosarecuperada[0].getId()));
+		log.info(cosarecuperada[0].getId());
 		log.info(cosarecuperada[0].getNombre());
 		log.info(cosarecuperada[0].getDescripcion());
 
@@ -217,7 +213,7 @@ public class HellosbApplicationTests {
 		Cosa cosa = createRandomCosa();
 		String location = createCosaAsUri(cosa);
 		log.info("LOCATION IS -->" + location);
-		cosa.setId(Long.parseLong(location.split("api/cosas/")[1]));
+		cosa.setId(location.split("api/cosas/")[1]);
 		cosa.setDescripcion("Es una cosa de goma");
 		cosa.setNombre("Goma");
 
