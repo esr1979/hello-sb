@@ -49,6 +49,7 @@ public class CosaController {
     @PutMapping("/{id}")
     public Cosa updateCosa(@RequestBody Cosa cosa, @PathVariable String id) {
         if (!cosa.getId().equals(id)) {
+        //if( cosa.getId() != id) {
             throw new CosaIdMismatchException();
         }
         cosaRepository.findById(id)

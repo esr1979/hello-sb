@@ -21,7 +21,6 @@ public class Cosa {
     }
 
     public Cosa(String nombre, String descripcion) {
-        super();
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
